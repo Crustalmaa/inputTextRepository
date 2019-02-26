@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>focusout demo</title>
+  <style>
+  .inputs {
+    float: left;
+    margin-right: 1em;
+  }
+  .inputs p {
+    margin-top: 0;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+ 
+<div class="inputs">
+  <p id = "test">
+    <input  id = "focusText" type="text">
+  </p>
+  
+</div>
+
+ 
+<script>
+var focus = 0,
+  blur = 0;
+$( "#test" )
+  .focusout(function() {
+    focus++;
+    var variable = $("#focusText").val();
+    if(variable.match(/^[0-9]+[.]*[0-9]*[*+-/][0-9]+[.]*[0-9]*$/g)===null){
+      $( "#focusText" ).val("");
+    }else{
+      var array= [];
+      var res = 0;
+      if(variable.indexOf('*')>=0){
+         array = variable.split("*");
+        res = parseFloat(array[0]) * parseFloat(array[1]);
+      }else if(variable.indexOf('+')>=0){
+        array = variable.split("+");
+        res = parseFloat(array[0]) + parseFloat(array[1]);
+      }else if(variable.indexOf('-')>=0){
+        array = variable.split("-");
+        res = parseFloat(array[0]) - parseFloat(array[1]);
+      }else if(variable.indexOf('/')>=0){
+        array = variable.split("/");
+        if(array[1] === '0'){
+          return ;
+        }
+        res = parseFloat(array[0]) / parseFloat(array[1]);
+      }
+      $( "#focusText" ).val(res.toString());
+    }
+  });
+  
+  $("#focusText").keyup(function(event){
+    var variable = $("#focusText").val();
+  
+    if("0123456789.-*/+".indexOf(event.key)===-1){
+      var i = variable.indexOf(event.key);
+      var str = variable;
+      var str = variable.replace(event.key, '');
+      $( "#focusText" ).val(str);
+    }
+  });
+  $("#focusText").keydown(function(event){
+    var variable = $("#focusText").val();
+  
+    if("0123456789.-*/+".indexOf(event.key)===-1){
+      var i = variable.indexOf(event.key);
+      var str = variable;
+      var str = variable.replace(event.key, '');
+      $( "#focusText" ).val(str);
+    }
+});
+
+</script>
+ 
+</body>
+</html>
