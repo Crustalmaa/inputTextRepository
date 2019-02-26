@@ -22,8 +22,14 @@
   </p>
   
 </div>
-
- 
+<!--
+echo "# inputTextRepository" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/Crustalmaa/inputTextRepository.git
+git push -u origin master
+-->
 <script>
 var focus = 0,
   blur = 0;
@@ -31,28 +37,18 @@ $( "#test" )
   .focusout(function() {
     focus++;
     var variable = $("#focusText").val();
-    if(variable.match(/^[0-9]+[.]*[0-9]*[*+-/][0-9]+[.]*[0-9]*$/g)===null){
+    if(variable.match(/^([0-9]+[.]*[0-9]*)([+*/-]([0-9]+[.]*[0-9]*))+$/g)===null || variable.match(/([0-9]+[.]*[0-9]*)([/](0[/+*-]+))+/g)){
       $( "#focusText" ).val("");
     }else{
-      var array= [];
-      var res = 0;
-      if(variable.indexOf('*')>=0){
-         array = variable.split("*");
-        res = parseFloat(array[0]) * parseFloat(array[1]);
-      }else if(variable.indexOf('+')>=0){
-        array = variable.split("+");
-        res = parseFloat(array[0]) + parseFloat(array[1]);
-      }else if(variable.indexOf('-')>=0){
-        array = variable.split("-");
-        res = parseFloat(array[0]) - parseFloat(array[1]);
-      }else if(variable.indexOf('/')>=0){
-        array = variable.split("/");
-        if(array[1] === '0'){
-          return ;
-        }
-        res = parseFloat(array[0]) / parseFloat(array[1]);
+      
+      console.log(eval(variable));
+      var res = eval(variable);
+
+      if(res=== Infinity|| isNaN(res)){
+        $( "#focusText" ).val("");
+      }else{
+        $( "#focusText" ).val(res);
       }
-      $( "#focusText" ).val(res.toString());
     }
   });
   
